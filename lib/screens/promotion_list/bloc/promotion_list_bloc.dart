@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_azicloud/module/app/promotion/screens/promotion_entry/bloc/promotion_entry_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,14 +10,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../../../../utils/button_style/prime_style.dart';
-import '../../../../../../utils/empty.dart';
-import '../../../../../../utils/image_cached.dart';
-import '../../../../../../utils/loading.dart';
 import '../../../../../../utils/utils.dart';
-import '../../../../../base/data_manager.dart';
-import '../../../../../main/model/system_config/system_config.dart';
 import '../../../model/promotion_list/promotion_list.dart';
+import '../../../model/system_config/system_config.dart';
 import '../../../popup/promotion_type_popup.dart';
 import '../../promotion_detail/bloc/promotion_detail_bloc.dart';
 
@@ -46,30 +40,14 @@ class PromotionListBloc extends Bloc<PromotionListEvent, PromotionListState> {
   Color checkexistDateColor(final DateTime date) {
     final now = DateTime.now().add(const Duration(days: 2));
     if (now.compareTo(date) < 0) {
-      return AppColors.lable_5F;
+      return Colors.black87;
     } else {
       return Colors.red;
     }
   }
 
   PromotionListBloc() : super(const PromotionListState()) {
-    on<PromotionListEvent>((event, emit) {
-      if (event is Started) {
-        Utils.mainBloc.add(const UpdateEvent('Started'));
-      } else if (event is SyncData) {
-        Utils.mainBloc.add(const UpdateEvent('SyncData'));
-      } else if (event is ShowFilter) {
-        Utils.mainBloc.add(const UpdateEvent('ShowFilter'));
-      } else if (event is ChooseApproved) {
-        Utils.mainBloc.add(const UpdateEvent('ChooseApproved'));
-      } else if (event is ChooseType) {
-        Utils.mainBloc.add(const UpdateEvent('ChooseType'));
-      } else if (event is ChooseActive) {
-        Utils.mainBloc.add(const UpdateEvent('ChooseActive'));
-      } else if (event is ChooseTime) {
-        Utils.mainBloc.add(const UpdateEvent('ChooseTime'));
-      }
-    });
+    on<PromotionListEvent>((event, emit) {});
     on<IsSearch>((event, emit) {
       searchController.clear();
       emit(state.copyWith(isSearch: !state.isSearch));
@@ -119,28 +97,6 @@ class PromotionListBloc extends Bloc<PromotionListEvent, PromotionListState> {
       if (!refresherController.isRefresh) {
         emit(state.copyWith(isListLoading: true));
       }
-      await DataManager.discountServices
-          .list(
-              workplace_id: id,
-              page: 1,
-              search_text: searchController.text,
-              list_active: state.list_active,
-              from_date: state.fromDate,
-              to_date: state.toDate,
-              list_type_id: state.listType
-                  .where((element) => element.value_bit)
-                  .toList()
-                  .map((e) => e.id)
-                  .toList(),
-              list_approved_key: state.listApproved
-                  .where((element) => element.value_bit)
-                  .toList()
-                  .map((e) => e.key)
-                  .toList())
-          .then((value) => emit(state.copyWith(
-                listDiscount: value.discount_list,
-                total_count: value.total_count,
-              )));
     } catch (e) {
       log(e.toString());
       refresherController.refreshFailed();
@@ -154,31 +110,10 @@ class PromotionListBloc extends Bloc<PromotionListEvent, PromotionListState> {
   onLoad(OnLoad event, Emitter<PromotionListState> emit) async {
     try {
       emit(state.copyWith(page: state.page + 1));
-      if (state.page <= Utils().getTotalPage(state.total_count)) {
-        emit(state.copyWith(isListLoading: true));
-        await DataManager.discountServices
-            .list(
-                workplace_id: id,
-                page: state.page,
-                search_text: searchController.text,
-                list_active: state.list_active,
-                from_date: state.fromDate,
-                to_date: state.toDate,
-                list_type_id: state.listType
-                    .where((element) => element.value_bit)
-                    .toList()
-                    .map((e) => e.id)
-                    .toList(),
-                list_approved_key: state.listApproved
-                    .where((element) => element.value_bit)
-                    .toList()
-                    .map((e) => e.key)
-                    .toList())
-            .then((value) => emit(state.copyWith(
-                  listDiscount: [...state.listDiscount, ...value.discount_list],
-                  total_count: value.total_count,
-                )));
-      }
+      // if (state.page <= Utils().getTotalPage(state.total_count)) {
+      //   emit(state.copyWith(isListLoading: true));
+
+      // }
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(isListLoading: false));
@@ -240,43 +175,9 @@ class PromotionListBloc extends Bloc<PromotionListEvent, PromotionListState> {
   started(Started event, Emitter<PromotionListState> emit) async {
     try {
       emit(state.copyWith(isListLoading: true));
-      await DataManager.discountServices
-          .list(
-              workplace_id: id,
-              page: 1,
-              search_text: searchController.text,
-              list_active: state.list_active,
-              from_date: state.fromDate,
-              to_date: state.toDate,
-              list_type_id: state.listType
-                  .where((element) => element.value_bit)
-                  .toList()
-                  .map((e) => e.id)
-                  .toList(),
-              list_approved_key: state.listApproved
-                  .where((element) => element.value_bit)
-                  .toList()
-                  .map((e) => e.key)
-                  .toList())
-          .then((value) => emit(state.copyWith(
-                listDiscount: value.discount_list,
-                total_count: value.total_count,
-              )));
-      if (state.listType.isEmpty) {
-        await DataManager.discountServices
-            .discountTypes()
-            .then((value) => emit(state.copyWith(
-                  listType:
-                      value.map((e) => e.copyWith(value_bit: false)).toList(),
-                )));
-      }
-      if (state.listApproved.isEmpty) {
-        await DataManager.systemConfigServices
-            .listAzitask(key: 'admin.approved')
-            .then((value) => emit(state.copyWith(
-                  listApproved: value,
-                )));
-      }
+
+      if (state.listType.isEmpty) {}
+      if (state.listApproved.isEmpty) {}
     } catch (e) {
       log(e.toString());
       refresherController.loadFailed();

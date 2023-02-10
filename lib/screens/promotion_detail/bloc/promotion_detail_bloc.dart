@@ -7,6 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../model/customer_promotion/customer_promotion.dart';
 import '../../../model/promotion_model/promotion_model.dart';
+import '../../../utils/utils.dart';
 import '../ui_submited.dart';
 import '../ui_watting_submit.dart';
 

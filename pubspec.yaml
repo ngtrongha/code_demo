@@ -32,8 +32,11 @@ dependencies:
   cached_network_image: ^3.2.3
   cupertino_icons: ^1.0.2
   currency_formatter: ^2.0.0
+  currency_text_input_formatter: ^2.1.8
+  expandable: ^5.0.1
   flutter:
     sdk: flutter
+  flutter_animate: ^3.1.0
   flutter_bloc: ^8.1.2
   flutter_easyloading: ^3.0.5
   flutter_html: ^2.2.1
@@ -41,6 +44,7 @@ dependencies:
   freezed: ^2.2.1
   freezed_annotation: ^2.2.0
   get: ^4.6.5
+  html_editor_enhanced: ^2.5.1
   image_gallery_saver: ^1.7.1
   image_picker: ^0.8.6+1
   intl: null

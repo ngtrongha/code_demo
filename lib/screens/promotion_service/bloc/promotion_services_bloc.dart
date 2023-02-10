@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../../../../utils/utils.dart';
 import '../../../model/promotion_model/promotion_model.dart';
@@ -24,9 +25,7 @@ class PromotionServicesBloc
   final refreshController = RefreshController();
   late int workplace_id;
   PromotionServicesBloc() : super(const PromotionServicesState()) {
-    on<PromotionServicesEvent>((event, emit) {
-      
-    });
+    on<PromotionServicesEvent>((event, emit) {});
     on<GetOldService>((event, emit) => emit(state.copyWith(
         listServicePromotion: event.listService,
         listDeletePromotion: event.listServiceDelete)));
@@ -40,20 +39,6 @@ class PromotionServicesBloc
   onRefresh(OnRefresh event, Emitter<PromotionServicesState> emit) async {
     try {
       if (!refreshController.isRefresh) emit(state.copyWith(isLoading: true));
-      await DataManager.serviceServices.list(
-          id: workplace_id,
-          page: 1,
-          search: searchController.text,
-          list_active: [
-            true
-          ],
-          list_group_id: [],
-          list_approved_key: [
-            'admin.approved.ok'
-          ]).then((value) => emit(state.copyWith(
-            listService: value.service_list,
-            total_count: value.total_count,
-          )));
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(isLoading: false));
@@ -66,16 +51,11 @@ class PromotionServicesBloc
 
   deleteService(
       DeleteService event, Emitter<PromotionServicesState> emit) async {
-    await Utils.deletePopup(
-      onConfirm: () {
-        emit(state.copyWith(
-            listDeletePromotion: state.listDeletePromotion.toList()
-              ..addIf(event.value.id > 0, event.value),
-            listServicePromotion: state.listServicePromotion.toList()
-              ..remove(event.value)));
-        Get.back();
-      },
-    );
+    emit(state.copyWith(
+        listDeletePromotion: state.listDeletePromotion.toList()
+          ..addIf(event.value.id > 0, event.value),
+        listServicePromotion: state.listServicePromotion.toList()
+          ..remove(event.value)));
   }
 
   addService(AddService event, Emitter<PromotionServicesState> emit) async {
@@ -101,23 +81,9 @@ class PromotionServicesBloc
   onLoad(OnLoad event, Emitter<PromotionServicesState> emit) async {
     try {
       emit(state.copyWith(page: state.page + 1));
-      if (state.page <= Utils().getTotalPage(state.total_count)) {
-        emit(state.copyWith(isLoading: true));
-        await DataManager.serviceServices.list(
-            id: workplace_id,
-            page: state.page,
-            search: searchController.text,
-            list_active: [
-              true
-            ],
-            list_group_id: [],
-            list_approved_key: [
-              'admin.approved.ok'
-            ]).then((value) => emit(state.copyWith(
-              listService: [...state.listService, ...value.service_list],
-              total_count: value.total_count,
-            )));
-      }
+      // if (state.page <= Utils().getTotalPage(state.total_count)) {
+      //   emit(state.copyWith(isLoading: true));
+      // }
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(isLoading: false));
@@ -134,20 +100,6 @@ class PromotionServicesBloc
       if (!refreshController.isRefresh) {
         EasyLoading.show();
       }
-      await DataManager.serviceServices.list(
-          id: workplace_id,
-          page: 1,
-          search: searchController.text,
-          list_active: [
-            true
-          ],
-          list_group_id: [],
-          list_approved_key: [
-            'admin.approved.ok'
-          ]).then((value) => emit(state.copyWith(
-            listService: value.service_list,
-            total_count: value.total_count,
-          )));
     } catch (e) {
       log(e.toString());
       EasyLoading.dismiss();

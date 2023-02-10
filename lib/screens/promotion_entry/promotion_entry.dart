@@ -35,7 +35,7 @@ class PromotionEntryScreen extends StatelessWidget {
                           children: [
                             Container(
                                 width: double.infinity,
-                                color: AppColors.lable_A3.withOpacity(0.18),
+                                color: Colors.black.withOpacity(0.18),
                                 padding: const EdgeInsets.all(10),
                                 child: 'Thông tin cơ bản'.bodyLarge()),
                             Center(
@@ -47,7 +47,7 @@ class PromotionEntryScreen extends StatelessWidget {
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     border:
-                                        Border.all(color: AppColors.bg_DADADA),
+                                        Border.all(color: Colors.black12),
                                     borderRadius: BorderRadius.circular(4)),
                                 child: state.promotion.image.isNotEmpty &&
                                         state.avatar == null
@@ -62,8 +62,7 @@ class PromotionEntryScreen extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              SvgPicture.asset(
-                                                  AppSVG.cameraAdd),
+                                              Icon(Icons.camera_alt),
                                               'Hình ảnh đại diện'
                                                   .displayMedium()
                                             ],
@@ -96,8 +95,7 @@ class PromotionEntryScreen extends StatelessWidget {
                                 return null;
                               },
                               decoration: InputDecoration(
-                                  hintText: AppLocalizations.of(Get.context!)!
-                                      .input_hint),
+                                  hintText: 'Nhập...'),
                             ).marginOnly(bottom: 10, left: 10, right: 10),
                             'Mã giảm giá'.requiredText().marginOnly(left: 10),
                             TextFormField(
@@ -113,8 +111,7 @@ class PromotionEntryScreen extends StatelessWidget {
                                 return null;
                               },
                               decoration: InputDecoration(
-                                  hintText: AppLocalizations.of(Get.context!)!
-                                      .input_hint),
+                                  hintText: 'Nhập...'),
                             ).marginOnly(bottom: 10, left: 10, right: 10),
                             'Thời gian hiệu lực'
                                 .requiredText()
@@ -144,7 +141,7 @@ class PromotionEntryScreen extends StatelessWidget {
                                   bloc.add(const ChooseEffectiveTime()),
                               decoration: InputDecoration(
                                   suffixIcon:
-                                      SvgPicture.asset(AppSVG.calendarDate)
+                                      Icon(Icons.calendar_month)
                                           .paddingAll(14)),
                             ).marginOnly(bottom: 10, left: 10, right: 10),
                             'Thời gian kết thúc'
@@ -211,8 +208,7 @@ class PromotionEntryScreen extends StatelessWidget {
                                     onTap: () => bloc
                                         .add(const ChooseTimeStartCollecting()),
                                     decoration: InputDecoration(
-                                        suffixIcon: SvgPicture.asset(
-                                                AppSVG.calendarDate)
+                                        suffixIcon: Icon(Icons.calendar_month)
                                             .paddingAll(14)),
                                   ).marginOnly(bottom: 10, left: 10, right: 10),
                                 ],
@@ -276,7 +272,7 @@ class PromotionEntryScreen extends StatelessWidget {
                                         decoration: InputDecoration(
                                             suffixIcon: Icon(
                                           Icons.arrow_forward_ios_rounded,
-                                          color: AppColors.lable_42,
+                                          color: Colors.black,
                                           size: 15.sp,
                                         )),
                                       ).marginOnly(
@@ -328,7 +324,7 @@ class PromotionEntryScreen extends StatelessWidget {
                                         decoration: InputDecoration(
                                             suffixIcon: Icon(
                                           Icons.arrow_forward_ios_rounded,
-                                          color: AppColors.lable_42,
+                                          color: Colors.black,
                                           size: 15.sp,
                                         )),
                                       ).marginOnly(
@@ -340,7 +336,7 @@ class PromotionEntryScreen extends StatelessWidget {
                             Container(
                                 margin: const EdgeInsets.only(top: 10),
                                 width: double.infinity,
-                                color: AppColors.lable_A3.withOpacity(0.18),
+                                color: Colors.black.withOpacity(0.18),
                                 padding: const EdgeInsets.all(10),
                                 child: 'Thiết lập mức giảm'.bodyLarge()),
                             'Hình thức giảm giá'
@@ -377,8 +373,7 @@ class PromotionEntryScreen extends StatelessWidget {
                                 return null;
                               },
                               decoration: InputDecoration(
-                                  hintText: AppLocalizations.of(Get.context!)!
-                                      .input_hint),
+                                  hintText: 'Nhập...'),
                             ).marginOnly(bottom: 10, left: 10, right: 10),
                             if (state.discountType.key ==
                                 'discount.type.percent')
@@ -410,8 +405,7 @@ class PromotionEntryScreen extends StatelessWidget {
                                         .copyWith(fontSize: 18.sp),
                                     decoration: InputDecoration(
                                         hintText:
-                                            AppLocalizations.of(Get.context!)!
-                                                .input_hint),
+                                            'Nhập...'),
                                   ).marginOnly(bottom: 10, left: 10, right: 10),
                                   'Giá trị tối đa đơn hàng (%)'
                                       .requiredText()
@@ -435,8 +429,7 @@ class PromotionEntryScreen extends StatelessWidget {
                                         .copyWith(fontSize: 18.sp),
                                     decoration: InputDecoration(
                                         hintText:
-                                            AppLocalizations.of(Get.context!)!
-                                                .input_hint),
+                                            'Nhập...'),
                                   ).marginOnly(bottom: 10, left: 10, right: 10),
                                 ],
                               )
@@ -467,8 +460,7 @@ class PromotionEntryScreen extends StatelessWidget {
                                         .copyWith(fontSize: 18.sp),
                                     decoration: InputDecoration(
                                         hintText:
-                                            AppLocalizations.of(Get.context!)!
-                                                .input_hint),
+                                            'Nhập...'),
                                   ).marginOnly(bottom: 10, left: 10, right: 10),
                                 ],
                               ),
@@ -492,8 +484,7 @@ class PromotionEntryScreen extends StatelessWidget {
                               style: Get.textTheme.bodyLarge!
                                   .copyWith(fontSize: 18.sp),
                               decoration: InputDecoration(
-                                  hintText: AppLocalizations.of(Get.context!)!
-                                      .input_hint),
+                                  hintText: 'Nhập...'),
                             ).marginOnly(bottom: 10, left: 10, right: 10),
                             'Số lượt sử dụng cho mỗi khách'
                                 .requiredText()
@@ -515,8 +506,7 @@ class PromotionEntryScreen extends StatelessWidget {
                               style: Get.textTheme.bodyLarge!
                                   .copyWith(fontSize: 18.sp),
                               decoration: InputDecoration(
-                                  hintText: AppLocalizations.of(Get.context!)!
-                                      .input_hint),
+                                  hintText: 'Nhập...'),
                             ).marginOnly(bottom: 10, left: 10, right: 10),
                             'Quy định'
                                 .requiredText()
@@ -532,8 +522,7 @@ class PromotionEntryScreen extends StatelessWidget {
                                   HtmlEditor(
                                     controller: bloc.controller,
                                     htmlEditorOptions: HtmlEditorOptions(
-                                      hint: AppLocalizations.of(Get.context!)!
-                                          .service_entry_regulations_hint,
+                                      hint: 'Nhập...',
                                       shouldEnsureVisible: false,
                                       autoAdjustHeight: true,
                                     ),
@@ -605,8 +594,7 @@ class PromotionEntryScreen extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  AppLocalizations.of(Get.context!)!
-                                      .service_entry_active
+                                  'Sử dụng'
                                       .bodyLarge(),
                                   Switch(
                                     value: state.isActive,
@@ -638,15 +626,13 @@ class PromotionEntryScreen extends StatelessWidget {
                               color: Colors.black26, offset: Offset(0, -1))
                         ],
                         borderRadius: BorderRadius.circular(8)),
-                    child: AppLocalizations.of(context)!
-                        .btn_confirm
+                    child: 'Xác nhận'
                         .bodyLarge(color: Colors.white)
                         .elevatedButton(
                           onPressed: () {
                             Utils().unfocusScreen(context);
                             bloc.add(const Create());
                           },
-                          style: const PrimeButtonStyle(borderRadius: 100),
                         ),
                   ),
                 ],

@@ -25,23 +25,19 @@ class PromotionListScreen extends StatelessWidget {
                         textAlignVertical: TextAlignVertical.center,
                         decoration: InputDecoration(
                             alignLabelWithHint: true,
-                            hintText: AppLocalizations.of(context)!.search,
+                            hintText: 'search',
                             hintStyle: Get.textTheme.bodyLarge!
                                 .copyWith(color: Colors.white38),
                             border: InputBorder.none,
                             focusedBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
-                            prefixIcon: SvgPicture.asset(
-                              AppSVG.exit,
-                              color: Colors.white,
-                            ).onTap(onTap: () {
+                            prefixIcon: const Icon(Icons.close, color: Colors.white
+                            ,).onTap(onTap: () {
                               bloc.add(const IsSearch());
                               bloc.add(const OnRefresh());
                             }).marginOnly(top: 10, right: 16, bottom: 10),
-                            suffixIcon: SvgPicture.asset(
-                              AppSVG.searchFill,
-                              color: Colors.white,
-                            )
+                            suffixIcon: const Icon(Icons.search, color: Colors.white
+                            ,)
                                 .onTap(onTap: () => bloc.add(const OnRefresh()))
                                 .marginOnly(top: 9, left: 9, bottom: 9)),
                       )
@@ -52,18 +48,14 @@ class PromotionListScreen extends StatelessWidget {
                 : AppBar(
                     title: 'Khuyến mãi'.titleLarge(color: Colors.white),
                     actions: [
-                      SvgPicture.asset(
-                        AppSVG.searchFill,
-                      )
+                      Icon(Icons.search, color: Colors.white
+                            )
                           .onTap(
                             onTap: () => bloc.add(const IsSearch()),
                           )
                           .marginOnly(right: 10),
-                      SvgPicture.asset(
-                        AppSVG.arrowSwap,
-                        width: 20.sp,
-                        height: 20.sp,
-                      )
+                      Icon(Icons.sync, color: Colors.white
+                            ,)
                           .onTap(
                             onTap: () => bloc.add(const SyncData()),
                           )
@@ -98,11 +90,9 @@ class PromotionListScreen extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          SvgPicture.asset(
-                            AppSVG.filter,
-                            width: 20.sp,
-                            height: 20.sp,
-                          ).marginOnly(right: 10),
+                          Icon(Icons.filter_alt
+                          , color: Colors.white
+                            ,).marginOnly(right: 10),
                           'Lọc'.bodyLarge().marginOnly(right: 10),
                         ],
                       ).onTap(
@@ -130,13 +120,13 @@ class PromotionListScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(7),
-                            color: AppColors.bg_EAECF6),
+                            color: Colors.black12),
                         child: Row(
                           children: [
                             Expanded(child: 'Phân loại'.bodyMedium()),
                             Icon(
                               Icons.keyboard_arrow_down_rounded,
-                              color: AppColors.lable_42,
+                              color: Colors.black,
                               size: 24.sp,
                             )
                           ],
@@ -153,13 +143,13 @@ class PromotionListScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(7),
-                            color: AppColors.bg_EAECF6),
+                            color: Colors.black12),
                         child: Row(
                           children: [
                             Expanded(child: 'Trạng thái'.bodyMedium()),
                             Icon(
                               Icons.keyboard_arrow_down_rounded,
-                              color: AppColors.lable_42,
+                              color: Colors.black,
                               size: 24.sp,
                             )
                           ],
@@ -176,13 +166,13 @@ class PromotionListScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(7),
-                            color: AppColors.bg_EAECF6),
+                            color: Colors.black12),
                         child: Row(
                           children: [
                             Expanded(child: 'Kiểm duyệt'.bodyMedium()),
                             Icon(
                               Icons.keyboard_arrow_down_rounded,
-                              color: AppColors.lable_42,
+                              color: Colors.black,
                               size: 24.sp,
                             )
                           ],
@@ -199,13 +189,13 @@ class PromotionListScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(7),
-                            color: AppColors.bg_EAECF6),
+                            color: Colors.black12),
                         child: Row(
                           children: [
                             Expanded(child: 'Thời gian'.bodyMedium()),
                             Icon(
                               Icons.keyboard_arrow_down_rounded,
-                              color: AppColors.lable_42,
+                              color: Colors.black,
                               size: 24.sp,
                             )
                           ],
@@ -228,18 +218,14 @@ class PromotionListScreen extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black26E7ED),
+                                border: Border.all(color: Colors.black26),
                                 borderRadius: BorderRadius.circular(100)),
                             child: Row(
                               children: [
                                 'Từ ${state.fromDate == null ? '' : Utils.dateToString('dd/MM/yyyy', state.fromDate!)}${state.toDate == null ? '' : ' - Đến ${Utils.dateToString('dd/MM/yyyy', state.toDate!)}'}'
                                     .bodyMedium()
                                     .marginOnly(right: 5),
-                                SvgPicture.asset(
-                                  AppSVG.exit,
-                                  width: 12.sp,
-                                  height: 12.sp,
-                                ).onTap(
+                                Icon(Icons.close, size: 15.sp,color: Colors.red,).onTap(
                                   onTap: () {
                                     bloc.add(const RemoveDateTime());
                                     bloc.add(const Started());
@@ -255,16 +241,12 @@ class PromotionListScreen extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.black26E7ED),
+                                  border: Border.all(color: Colors.black26),
                                   borderRadius: BorderRadius.circular(100)),
                               child: Row(
                                 children: [
                                   e.name.bodyMedium().marginOnly(right: 5),
-                                  SvgPicture.asset(
-                                    AppSVG.exit,
-                                    width: 12.sp,
-                                    height: 12.sp,
-                                  ).onTap(
+                                  Icon(Icons.close, size: 12.sp,).onTap(
                                     onTap: () {
                                       bloc.add(ChooseType(config: e));
                                       bloc.add(const Started());
@@ -283,16 +265,12 @@ class PromotionListScreen extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.black26E7ED),
+                                  border: Border.all(color: Colors.black26),
                                   borderRadius: BorderRadius.circular(100)),
                               child: Row(
                                 children: [
                                   e.name.bodyMedium().marginOnly(right: 5),
-                                  SvgPicture.asset(
-                                    AppSVG.exit,
-                                    width: 12.sp,
-                                    height: 12.sp,
-                                  ).onTap(
+                                  Icon(Icons.close, size: 12.sp,).onTap(
                                     onTap: () {
                                       bloc.add(ChooseApproved(config: e));
                                       bloc.add(const Started());
@@ -309,18 +287,14 @@ class PromotionListScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black26E7ED),
+                              border: Border.all(color: Colors.black26),
                               borderRadius: BorderRadius.circular(100)),
                           child: Row(
                             children: [
                               (e ? "Sử dụng" : "Không sử dụng")
                                   .bodyMedium()
                                   .marginOnly(right: 5),
-                              SvgPicture.asset(
-                                AppSVG.exit,
-                                width: 12.sp,
-                                height: 12.sp,
-                              ).onTap(
+                              Icon(Icons.close, size: 12.sp,).onTap(
                                 onTap: () {
                                   bloc.add(ChooseActive(active: e));
                                   bloc.add(const Started());
@@ -368,7 +342,7 @@ class PromotionListScreen extends StatelessWidget {
                                       child: 'Trạng thái'.titleMedium(),
                                     ),
                                     theme: const ExpandableThemeData(
-                                        iconColor: AppColors.lable_42,
+                                        iconColor: Colors.black,
                                         iconPadding: EdgeInsets.only(right: 10),
                                         crossFadePoint: 0),
                                     collapsed: Container(),
@@ -449,7 +423,7 @@ class PromotionListScreen extends StatelessWidget {
                                       child: 'Kiểm duyệt'.titleMedium(),
                                     ),
                                     theme: const ExpandableThemeData(
-                                      iconColor: AppColors.lable_42,
+                                      iconColor: Colors.black,
                                       iconPadding: EdgeInsets.only(right: 10),
                                       hasIcon: true,
                                     ),
@@ -520,7 +494,7 @@ class PromotionListScreen extends StatelessWidget {
                                           child: 'Danh mục'.titleMedium(),
                                         ),
                                         theme: const ExpandableThemeData(
-                                          iconColor: AppColors.lable_42,
+                                          iconColor: Colors.black,
                                           iconPadding:
                                               EdgeInsets.only(right: 10),
                                           hasIcon: true,
@@ -599,7 +573,7 @@ class PromotionListScreen extends StatelessWidget {
                                                     'Thời gian'.titleMedium(),
                                               ),
                                               theme: const ExpandableThemeData(
-                                                iconColor: AppColors.lable_42,
+                                                iconColor: Colors.black,
                                                 iconPadding:
                                                     EdgeInsets.only(right: 10),
                                                 hasIcon: true,
@@ -910,13 +884,7 @@ class PromotionListScreen extends StatelessWidget {
                                                                           100)),
                                                           child: Row(
                                                             children: [
-                                                              SvgPicture.asset(
-                                                                AppSVG.exit,
-                                                                width: 15.sp,
-                                                                height: 15.sp,
-                                                                color:
-                                                                    Colors.red,
-                                                              ).marginOnly(
+                                                              Icon(Icons.close, size: 12.sp,).marginOnly(
                                                                   right: 5),
                                                               'Hủy'.bodySmall(
                                                                   color: Colors

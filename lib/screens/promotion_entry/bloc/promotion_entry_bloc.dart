@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
-import 'package:flutter_azicloud/module/main/model/image_data/image_data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -15,18 +14,12 @@ import 'package:path_provider/path_provider.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 
-import '../../../../../../utils/button_style/prime_style.dart';
-import '../../../../../../utils/image_cached.dart';
-import '../../../../../../utils/photos_gallery/photos_gallery.dart';
-import '../../../../../../utils/popup/full_html_editer/full_html_editer.dart';
-import '../../../../../../utils/upload_image_widget.dart';
 import '../../../../../../utils/utils.dart';
-import '../../../../../base/data_manager.dart';
-import '../../../../../main/model/system_config/system_config.dart';
-import '../../../../service/model/service_group/service_group.dart';
-import '../../../../service/model/service_model/service_model.dart';
 import '../../../model/promotion_list/promotion_list.dart';
 import '../../../model/promotion_model/promotion_model.dart';
+import '../../../model/system_config/system_config.dart';
+import '../../../widget/image_cached.dart';
+import '../../../widget/photos_gallery/photos_gallery.dart';
 import '../../promotion_service/bloc/promotion_services_bloc.dart';
 import '../../promotion_service_groups/bloc/promotion_service_groups_bloc.dart';
 
@@ -74,27 +67,7 @@ class PromotionEntryBloc
             fromDate: DateTime.now(),
             toDate: DateTime.now(),
             openDate: DateTime.now())) {
-    on<PromotionEntryEvent>((event, emit) {
-      if (event is ChooseEffectiveTime) {
-        Utils.mainBloc.add(const UpdateEvent('ChooseEffectiveTime'));
-      } else if (event is ChooseEndTime) {
-        Utils.mainBloc.add(const UpdateEvent('ChooseEndTime'));
-      } else if (event is ChooseTimeStartCollecting) {
-        Utils.mainBloc.add(const UpdateEvent('ChooseTimeStartCollecting'));
-      } else if (event is ChooseAvatar) {
-        Utils.mainBloc.add(const UpdateEvent('ChooseAvatar'));
-      } else if (event is ChooseImage) {
-        Utils.mainBloc.add(const UpdateEvent('ChooseImage'));
-      } else if (event is StartedEntry) {
-        Utils.mainBloc.add(const UpdateEvent('Started'));
-      } else if (event is ChooseDiscountTime) {
-        Utils.mainBloc.add(const UpdateEvent('ChooseDiscountTime'));
-      } else if (event is ChooseDiscountType) {
-        Utils.mainBloc.add(const UpdateEvent('ChooseDiscountType'));
-      } else if (event is ChooseDiscountScope) {
-        Utils.mainBloc.add(const UpdateEvent('ChooseDiscountScope'));
-      }
-    });
+    on<PromotionEntryEvent>((event, emit) {});
     on<AddService>((event, emit) => emit(state.copyWith(
         listService: event.listService,
         listServiceDelete: event.listServiceDelete)));
@@ -140,57 +113,6 @@ class PromotionEntryBloc
         return;
       }
       EasyLoading.show();
-      var avatar = ImageData(
-        server_files: state.promotion.server_files,
-        filename: state.promotion.filename,
-        filepath: state.promotion.filepath,
-      );
-      var mediaList = <ImageData>[];
-      if (state.avatar != null) {
-        avatar = (await Utils()
-                .uploadImage(images: [state.avatar!], module: 'discount'))
-            .first;
-      }
-      if (state.listImage.isNotEmpty) {
-        mediaList = await Utils()
-            .uploadImage(images: state.listImage, module: 'discount');
-      }
-      await DataManager.discountServices
-          .create(
-              id: id,
-              workplace_id: workplace_id,
-              type_id: type_id,
-              time_lapse: timelapseFormatter.getUnformattedValue().toInt(),
-              amount: amountFormatter.getUnformattedValue().toInt(),
-              number_used: amountUseFormatter.getUnformattedValue().toInt(),
-              min_order_value: priceFormatter.getUnformattedValue().toDouble(),
-              max_order_value:
-                  maxValueFormatter.getUnformattedValue().toDouble(),
-              discount_value: state.discountType.key == 'discount.type.percent'
-                  ? discountFormatter.getUnformattedValue().toDouble()
-                  : discountprecentFormatter.getUnformattedValue().toDouble(),
-              name: nameController.text,
-              description: await controller.getText(),
-              active: state.isActive,
-              code: codeController.text,
-              type_time_key: state.discountTime.key,
-              scope_object_key: state.discountScope.key,
-              discount_type_key: state.discountType.key,
-              from_date: state.fromDate,
-              to_date: state.toDate,
-              open_date: state.openDate,
-              image: avatar,
-              media_list: mediaList,
-              service_list: state.listService,
-              service_group_list: state.listServiceGroup,
-              service_delete_list: state.listServiceDelete,
-              service_group_delete_list: state.listServiceGroupDelete,
-              media_delete_list: state.media_delete_list)
-          .then((value) {
-        if (value) {
-          Get.back();
-        }
-      });
     } catch (e) {
       log(e.toString());
       EasyLoading.dismiss();
@@ -202,60 +124,13 @@ class PromotionEntryBloc
   started(StartedEntry event, Emitter<PromotionEntryState> emit) async {
     try {
       EasyLoading.show();
-      if (id > 0) {
-        await DataManager.discountServices
-            .view(id: id, workplace_id: workplace_id)
-            .then((value) => emit(state.copyWith(promotion: value)));
-        nameController.text = state.promotion.name;
-        codeController.text = state.promotion.code;
-        controller.setText(state.promotion.description);
-        minValueController.text =
-            state.promotion.min_order_value.toStringAsFixed(0);
-        discoutController.text =
-            state.promotion.discount_value.toStringAsFixed(0);
-        maxValueController.text =
-            state.promotion.max_order_value.toStringAsFixed(0);
-        amountController.text = state.promotion.amount.toString();
-        amountUseController.text = state.promotion.number_used.toString();
-        timelapseController.text = state.promotion.time_lapse.toString();
-        emit(state.copyWith(
-          listService: state.promotion.service_list,
-          listServiceGroup: state.promotion.service_group_list,
-          fromDate: state.promotion.from_date ?? DateTime.now(),
-          toDate: state.promotion.to_date ?? DateTime.now(),
-          openDate: state.promotion.open_date ?? DateTime.now(),
-          isActive: state.promotion.active,
-          discountScope: state.listDiscountScope.firstWhere(
-            (element) => element.key == state.promotion.scope_object_key,
-            orElse: () => state.discountScope,
-          ),
-          discountTime: state.listDiscountTime.firstWhere(
-            (element) => element.key == state.promotion.type_time_key,
-            orElse: () => state.discountTime,
-          ),
-          discountType: state.listDiscountType.firstWhere(
-            (element) => element.key == state.promotion.discount_type_key,
-            orElse: () => state.discountType,
-          ),
-        ));
-      }
+      if (id > 0) {}
     } catch (e) {
       log(e.toString());
       EasyLoading.dismiss();
     } finally {
       EasyLoading.dismiss();
     }
-  }
-
-  Future<String> onImagePickCallback(File file) async {
-    final appDocDir = await getApplicationDocumentsDirectory();
-    final copiedFile =
-        await file.copy('${appDocDir.path}/${basename(file.path)}');
-    EasyLoading.show();
-    final url = await Utils().uploadImage(
-        images: [copiedFile],
-        module: 'html').whenComplete(() => EasyLoading.dismiss());
-    return '${url[0].server_files}${url[0].filepath}';
   }
 
   chooseImage(ChooseImage event, Emitter<PromotionEntryState> emit) async {

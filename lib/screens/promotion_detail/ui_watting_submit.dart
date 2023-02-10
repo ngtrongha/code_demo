@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_azicloud/module/app/promotion/screens/promotion_entry/bloc/promotion_entry_bloc.dart';
-import 'package:flutter_azicloud/utils/image_cached.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../../utils/photos_view/photos_view.dart';
 import '../../../../../utils/utils.dart';
 import '../../popup/service_group_promotion_view.dart';
 import '../../popup/service_promotion_view.dart';
+import '../../widget/image_cached.dart';
+import '../../widget/photos_view/photos_view.dart';
+import '../promotion_entry/bloc/promotion_entry_bloc.dart';
 import 'bloc/promotion_detail_bloc.dart';
 
 class UIWattingSubmit extends StatelessWidget {
@@ -45,7 +45,7 @@ class UIWattingSubmit extends StatelessWidget {
           children: [
             Container(
                 width: double.infinity,
-                color: AppColors.lable_A3.withOpacity(0.18),
+                color: Colors.black.withOpacity(0.18),
                 padding: const EdgeInsets.all(10),
                 child: 'Thông tin cơ bản'.bodyLarge()),
             if (state.promotion.image.isEmpty)
@@ -55,12 +55,12 @@ class UIWattingSubmit extends StatelessWidget {
                   width: 120.sp,
                   height: 120.sp,
                   decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.bg_DADADA),
+                      border: Border.all(color: Colors.black12),
                       borderRadius: BorderRadius.circular(4)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(AppSVG.cameraAdd).marginOnly(bottom: 5),
+                      const Icon(Icons.camera).marginOnly(bottom: 5),
                       'Hình ảnh đại diện'.displayMedium()
                     ],
                   ),
@@ -82,9 +82,7 @@ class UIWattingSubmit extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                'Tên mã giảm giá '
-                    .bodyMedium()
-                    .marginOnly(bottom: 8),
+                'Tên mã giảm giá '.bodyMedium().marginOnly(bottom: 8),
                 state.promotion.name.bodyLarge(),
                 const Divider(
                   thickness: 0.5,
@@ -143,8 +141,7 @@ class UIWattingSubmit extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      'Thời gian sưu tầm'
-                          .bodyMedium(),
+                      'Thời gian sưu tầm'.bodyMedium(),
                       Utils.dateToString('dd/MM/yyyy',
                               state.promotion.open_date ?? DateTime.now())
                           .bodyLarge(),
@@ -155,8 +152,7 @@ class UIWattingSubmit extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      'Sử dụng trong khoảng (h)'
-                          .bodyMedium(),
+                      'Sử dụng trong khoảng (h)'.bodyMedium(),
                       '${state.promotion.time_lapse} giờ'.bodyLarge(),
                     ],
                   ).marginSymmetric(vertical: 5),
@@ -179,7 +175,6 @@ class UIWattingSubmit extends StatelessWidget {
                               .bodyLarge(),
                           const Icon(
                             Icons.arrow_forward_ios_rounded,
-                            ,
                           )
                         ],
                       ).onTap(
@@ -206,7 +201,6 @@ class UIWattingSubmit extends StatelessWidget {
                               .bodyLarge(),
                           const Icon(
                             Icons.arrow_forward_ios_rounded,
-                            ,
                           )
                         ],
                       ).onTap(
@@ -226,7 +220,7 @@ class UIWattingSubmit extends StatelessWidget {
             ).marginSymmetric(horizontal: 10),
             Container(
                     width: double.infinity,
-                    color: AppColors.lable_A3.withOpacity(0.18),
+                    color: Colors.black.withOpacity(0.18),
                     padding: const EdgeInsets.all(10),
                     child: 'Thiết lập mức giảm'.bodyLarge())
                 .marginOnly(bottom: 10),
@@ -236,8 +230,7 @@ class UIWattingSubmit extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    'Giá trị đơn hàng đạt tới '
-                        .bodyMedium(),
+                    'Giá trị đơn hàng đạt tới '.bodyMedium(),
                     Utils.moneyFormat(state.promotion.min_order_value)
                         .bodyLarge(),
                   ],
@@ -261,8 +254,7 @@ class UIWattingSubmit extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    'Số lượng mã giảm giá'
-                        .bodyMedium(),
+                    'Số lượng mã giảm giá'.bodyMedium(),
                     state.promotion.amount.toString().bodyLarge(),
                   ],
                 ).marginSymmetric(vertical: 5),
@@ -273,8 +265,7 @@ class UIWattingSubmit extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    'Số lượt sử dụng cho mỗi khách'
-                        .bodyMedium(),
+                    'Số lượt sử dụng cho mỗi khách'.bodyMedium(),
                     state.promotion.number_used.toString().bodyLarge(),
                   ],
                 ).marginSymmetric(vertical: 5),
@@ -282,9 +273,7 @@ class UIWattingSubmit extends StatelessWidget {
                   thickness: 0.5,
                   color: Colors.black26,
                 ),
-                'Quy định'
-                    .bodyMedium()
-                    .marginOnly(bottom: 8),
+                'Quy định'.bodyMedium().marginOnly(bottom: 8),
                 Html(
                   data: state.promotion.description,
                   shrinkWrap: true,
@@ -294,10 +283,7 @@ class UIWattingSubmit extends StatelessWidget {
                   color: Colors.black26,
                 ),
                 if (state.promotion.media_list.isNotEmpty)
-                  AppLocalizations.of(Get.context!)!
-                      .picture_and_video
-                      .bodyMedium()
-                      .marginSymmetric(vertical: 10),
+                  'Hình ảnh'.bodyMedium().marginSymmetric(vertical: 10),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -324,12 +310,12 @@ class UIWattingSubmit extends StatelessWidget {
                                 Text(
                                   '+${state.promotion.media_list.length - 5}',
                                   style: Get.textTheme.bodySmall!
-                                      .copyWith(color: AppColors.lable_A3),
+                                      .copyWith(color: Colors.black),
                                 ),
                                 Icon(
                                   Icons.keyboard_arrow_down_rounded,
                                   size: 20.sp,
-                                  color: AppColors.lable_A3,
+                                  color: Colors.black,
                                 ),
                               ],
                             ),
